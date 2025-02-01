@@ -1,0 +1,79 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+
+}
+
+<div class="container titlebox">
+    <h1 class="display-4">Test sound</h1>
+    <p>Do you hear sound?</p>
+</div>
+
+<!--кнопки відтворення звуку-->
+<div class="maincontainer">
+    <div class="controlcontainer" id="soundbuttons">
+        <form method="post" asp-page-handler="Play">
+            <button type="submit" name="action" value="playDo" onclick="naudioplay()">Play through NAudio</button>
+        </form>
+
+        <form method="post" asp-page-handler="Play">
+            <button type="submit" name="action" value="playMp3" onclick="mp3playing()">Play through mp3</button>
+            <audio id="audioPlayer" controls hidden></audio>
+        </form>
+
+        <form method="post" asp-page-handler="Play">
+            <button type="submit" name="action" value="createMp3" onclick="createfile()">Create mp3</button>
+        </form>
+
+
+
+    </div>
+
+    <!--Оберіть ноту-->
+
+    <div class="controlcontainer selectcontainer" id="choosenote">
+        <form method="post" asp-page-handler="ChooseNote" id="noteForm" onchange="submitNoteForm()">
+            <select name="SelectedNote" id="noteSelect">
+                @foreach (var note in Model.Notes)
+                {
+                    @if (note == Model.SelectedNote)
+                    {
+                        <option value="@note" selected="selected">@note</option>
+                    }
+                    else
+                    {
+                        <option value="@note">@note</option>
+                    }
+                }
+            </select>
+        </form>
+    </div>
+    <script>
+        function submitNoteForm() {
+            document.getElementById("noteForm").submit();
+            console.log("note is chosen");
+        }
+    </script>
+
+    <!--Інформація -->
+
+    <div class="controlcontainer infocontainer">
+
+        <p>@Model.msg</p>
+        @if (ViewData["AudioFile"] != null)
+        {
+            <p>@ViewData["AudioFile"]</p>
+            <audio controls autoplay style="display: none">
+                <source src="@ViewData["AudioFile"]" type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+        }
+        else
+        {
+            <p>File is not ready</p>
+        }
+    </div>
+</div>
+
+
