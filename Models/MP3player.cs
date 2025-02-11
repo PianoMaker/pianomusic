@@ -61,6 +61,7 @@ namespace Pianomusic.Models
             using (var memoryStream = new MemoryStream())  // Використовуємо MemoryStream для збереження MP3 в пам'яті
             {
                 var waveProvider = new SampleToWaveProvider(signalGenerator);
+
                 using (var writer = new LameMP3FileWriter(memoryStream, waveFormat, LAMEPreset.VBR_100))
                 {
                     byte[] buffer = new byte[waveProvider.WaveFormat.AverageBytesPerSecond];
